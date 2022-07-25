@@ -7,7 +7,7 @@ const {
 } = require("../controllers/validation");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const { errorMonitor } = require("mysql2/typings/mysql/lib/Connection");
+// const { errorMonitor } = require("mysql2/typings/mysql/lib/Connection");
 
 router.post("/register", signupValidation, (req, res, next) => {
   db.query(
@@ -15,6 +15,7 @@ router.post("/register", signupValidation, (req, res, next) => {
       req.body.email
     )});`,
     (err, result) => {
+      // @ts-ignore
       if (result.length) {
         return res.status(409).send({
           msg: "This email is already taken!",
@@ -23,7 +24,7 @@ router.post("/register", signupValidation, (req, res, next) => {
         // username is available
         bcrypt.hash(req.body.password, 10, (err, hash) => {
           if (err) {
-            //console.log(err);
+            // console.log(err);
             return res.status(500).send({
               msg: err,
             });
@@ -45,6 +46,9 @@ router.post("/register", signupValidation, (req, res, next) => {
           }
         });
       }
+      // log incoming payload & db results
+      console.log(result); // []
+      console.log(req.body.email); // undefined
     }
   );
 });
@@ -92,6 +96,9 @@ router.post("/login", loginValidation, (req, res, next) => {
           });
         }
       );
+      // log incoming payload & result
+      console.log(req.body.email);
+      console.log(result);
     }
   );
 });
