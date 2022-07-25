@@ -1,16 +1,14 @@
 const express = require("express");
-const bodyParser = require("body-parser");
 const cors = require("cors");
 const authRouter = require("./routes/router");
+require("dotenv").config();
 
 const app = express();
 
 app.use(express.json());
 
-app.use(bodyParser.json());
-
 app.use(
-  bodyParser.urlencoded({
+  express.urlencoded({
     extended: true,
   })
 );
@@ -30,4 +28,6 @@ app.use((err, req, res, next) => {
   });
 });
 
-app.listen(3000, () => console.log("Server is running on port 3000"));
+// @ts-ignore
+const port = process.env.PORT | 3000;
+app.listen(3000, () => console.log(`mysic-api is running on port ${port}`));
