@@ -7,6 +7,7 @@ const {
 } = require("../controllers/validation");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const { errorMonitor } = require("mysql2/typings/mysql/lib/Connection");
 
 router.post("/register", signupValidation, (req, res, next) => {
   db.query(
@@ -22,6 +23,7 @@ router.post("/register", signupValidation, (req, res, next) => {
         // username is available
         bcrypt.hash(req.body.password, 10, (err, hash) => {
           if (err) {
+            //console.log(err);
             return res.status(500).send({
               msg: err,
             });
