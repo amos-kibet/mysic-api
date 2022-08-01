@@ -88,6 +88,7 @@ const db = require("../models/user");
  * };
  */
 
+// @ts-ignore
 exports.signup = (req, res, next) => {
   let username = req.body.username;
   let email = req.body.email;
@@ -98,9 +99,11 @@ exports.signup = (req, res, next) => {
   if (password === cpassword) {
     let sql = "select * from users where email = ?;";
 
+    // @ts-ignore
     db.query(sql, [email], (err, result, fields) => {
       if (err) throw err;
 
+      // @ts-ignore
       if (result.length > 0) {
         //req.session.flag = 1;
         // return res.redirect('/');
@@ -114,6 +117,7 @@ exports.signup = (req, res, next) => {
         db.query(
           "insert into users(username, email, password) values (?,?,?);",
           [username, email, password],
+          // @ts-ignore
           (err, result, fields) => {
             if (err) throw err;
             // req.session.flag = 2;
@@ -175,24 +179,23 @@ exports.signup = (req, res, next) => {
     */
 };
 
+/*
 let hash = (key) => {
   bcrypt.hash(key, 10, (err, hash) => {
     if (err) throw err;
     return hash;
   });
 };
-
-/*
-let hash = (key) => {
-    new Promise((resolve, reject) => {
-        bcrypt.hash(key, 10, (err, hash) => {
-            (err) ? reject(err)
-                :
-                resolve(hash);
-        })
-    })
-};
 */
+
+let hash = (key) => {
+  new Promise((resolve, reject) => {
+    bcrypt.hash(key, 10, (err, hash) => {
+      err ? reject(err) : resolve(hash);
+    });
+  });
+};
+
 let compareHash = (key1, key2) => {
   new Promise((resolve, reject) => {
     bcrypt.compare(key1, key2, (error, result) =>
@@ -200,16 +203,20 @@ let compareHash = (key1, key2) => {
     );
   });
 };
+// @ts-ignore
 exports.login = (req, res, next) => {
   var email = req.body.email;
   var password = req.body.password;
 
   var sql = "select * from users where email = ?;";
 
+  // @ts-ignore
   db.query(sql, [email], (err, result, fields) => {
     if (err) throw err;
 
+    // @ts-ignore
     if (result.length && compareHash(password, result[0].password)) {
+      // @ts-ignore
       const token = jwt.sign({ id: result[0].id }, process.env.SECRET, {
         expiresIn: "1h",
       });
