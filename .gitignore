@@ -1,2 +1,4 @@
 .env
 ReadmeDump.md
+server.js
+/node_modules

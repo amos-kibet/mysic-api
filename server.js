@@ -1,33 +1,57 @@
-const express = require("express");
-const cors = require("cors");
-const authRouter = require("./routes/router");
-require("dotenv").config();
+/*
+const http = require('http');
+const app = require('./app');
+const process = require('process');
 
-const app = express();
+const normalizePort = val => {
+    const port = parseInt(val, 10);
 
-app.use(express.json());
+    if (isNaN(port)) {
+        return val;
+    }
+    if(port >= 0) {
+        return port;
+    }
+    return false;
+};
 
-app.use(
-  express.urlencoded({
-    extended: true,
-  })
-);
+const port = normalizePort(process.env.PORT || 3000);
+app.set('port', port);
 
-app.use(cors());
+const errorHandler = error => {
+    if(error.syscall !== 'listen') {
+        throw error;
+    }
+    const address = server.address();
+    const bind = typeof address === 'string' ? 'pipe' + address : 'port:' + port;
+    switch (error.code) {
+        case 'EACCES':
+            console.error(bind + 'requires elevated privileges.');
+            process.exit(1);
+            break;
+        case 'EADDRINUSE':
+            console.error(bind + 'is already in use!');
+            process.exit(1);
+            break;
+        default:
+            throw error;
+    }
+};
 
-app.use("/api", authRouter);
 
-// Handling Errors
-// Might be optional, will check on this
-app.use((err, req, res, next) => {
-  // console.log(err);
-  err.statusCode = err.statusCode || 500;
-  err.message = err.message || "Internal Server Error";
-  res.status(err.statusCode).json({
-    message: err.message,
-  });
+app.listen(port, () => {
+    console.log(`Server is running on port ${port}.`);
 });
 
-// @ts-ignore
-const port = process.env.PORT | 3000;
-app.listen(3000, () => console.log(`mysic-api is running on port ${port}`));
+
+const server = http.createServer(app);
+
+server.on('error', errorHandler);
+server.on('listening', () => {
+    const address = server.address();
+    const bind = typeof address === 'string' ? 'pipe' + address : 'port:' + port;
+    console.log('Server is running on port ' + bind);
+});
+
+server.listen(process.env.PORT || 3000);
+*/
