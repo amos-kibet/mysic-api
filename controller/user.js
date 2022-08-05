@@ -1,6 +1,102 @@
+const User = require("../models/userModel");
+const {
+  hash: hashPassword,
+  compare: comparePassword,
+} = require("../utils/password");
+const { generate: generateToken } = require("../utils/token");
+
+exports.signup = (req, res) => {
+  const { username, email, password } = req.body;
+  const hashedPassword = hashPassword(password.trim());
+
+  const user = new User(
+    username.trim(),
+    email.trim(),
+    // @ts-ignore
+    hashedPassword
+  );
+
+  User.create(user, (err, data) => {
+    if (err) {
+      res.status(500).send({
+        status: "error",
+        message: err.message,
+      });
+    } else {
+      const token = generateToken(data.id);
+      res.status(201).send({
+        status: "success",
+        data: {
+          token,
+          data,
+        },
+      });
+    }
+  });
+};
+
+exports.signin = (req, res) => {
+  const { email, password } = req.body;
+  User.findByEmail(email.trim(), (err, data) => {
+    if (err) {
+      if (err.kind === "not_found") {
+        res.status(404).send({
+          status: "error",
+          message: `User with email ${email} was not found`,
+        });
+        return;
+      }
+      res.status(500).send({
+        status: "error",
+        message: err.message,
+      });
+      return;
+    }
+    if (data) {
+      if (comparePassword(password.trim(), data.password)) {
+        const token = generateToken(data.id);
+        res.status(200).send({
+          status: "success",
+          data: {
+            token,
+            username: data.username,
+            email: data.email,
+          },
+        });
+        return;
+      }
+      res.status(401).send({
+        status: "error",
+        message: "Incorrect password",
+      });
+    }
+  });
+};
+
+/*
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const db = require("../models/user");
+
+
+
+
+let hash = (key) => {
+  new Promise((resolve, reject) => {
+    bcrypt.hash(key, 10, (err, hash) => {
+      err ? reject(err) : resolve(hash);
+    });
+  });
+};
+
+let compareHash = (key1, key2) => {
+  new Promise((resolve, reject) => {
+    bcrypt.compare(key1, key2, (error, result) =>
+      error ? reject(error) : resolve(result)
+    );
+  });
+};
+*/
 
 /**
  * const bcrypt = require('bcryptjs');
@@ -89,6 +185,7 @@ const db = require("../models/user");
  */
 
 // @ts-ignore
+/*
 exports.signup = (req, res, next) => {
   let username = req.body.username;
   let email = req.body.email;
@@ -112,21 +209,28 @@ exports.signup = (req, res, next) => {
           // redirect: res.redirect("/api/register")
         });
       } else {
-        // let sql = 'insert into users(username, email, password) values (?,?,?);';
-        hash(password);
-        db.query(
-          "insert into users(username, email, password) values (?,?,?);",
-          [username, email, password],
+        let sql =
+          "insert into users(username, email, password) values (?,?,?);";
+        // hash(password);
+
+        hash(password)
           // @ts-ignore
-          (err, result, fields) => {
-            if (err) throw err;
-            // req.session.flag = 2;
-            return res.status(200).json({
-              msg: "You are signed up!",
-              //redirect: res.redirect("/")
-            });
-          }
-        );
+          .then(() => {
+            db.query(
+              sql,
+              [username, email, password],
+              // @ts-ignore
+              (err, result, fields) => {
+                if (err) throw err;
+                // req.session.flag = 2;
+                return res.status(200).json({
+                  msg: "You are signed up!",
+                  //redirect: res.redirect("/")
+                });
+              }
+            );
+          })
+          .catch((err) => console.log(err));
       }
     });
   } else {
@@ -176,34 +280,18 @@ exports.signup = (req, res, next) => {
                 );
         }
     );
-    */
+   
 };
 
-/*
+
+
 let hash = (key) => {
   bcrypt.hash(key, 10, (err, hash) => {
     if (err) throw err;
     return hash;
   });
 };
-*/
 
-let hash = (key) => {
-  new Promise((resolve, reject) => {
-    bcrypt.hash(key, 10, (err, hash) => {
-      err ? reject(err) : resolve(hash);
-    });
-  });
-};
-
-let compareHash = (key1, key2) => {
-  new Promise((resolve, reject) => {
-    bcrypt.compare(key1, key2, (error, result) =>
-      error ? reject(error) : resolve(result)
-    );
-  });
-};
-// @ts-ignore
 exports.login = (req, res, next) => {
   var email = req.body.email;
   var password = req.body.password;
@@ -292,5 +380,6 @@ exports.login = (req, res, next) => {
         }
     );
 
-     */
+     
 };
+*/

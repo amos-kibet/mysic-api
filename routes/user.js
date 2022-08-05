@@ -1,14 +1,20 @@
-const express = require('express');
-const router = express.Router();
+const router = require("express").Router();
+const { asyncHandler } = require("../middleware/asyncHandler");
 
-const userController = require('../controller/user');
+const validateEmail = require("../middleware/validateEmail");
+const {
+  signup: signupValidator,
+  signin: signinValidator,
+} = require("../validators/auth");
 
-/*
-router.post = function (s, signup) {
+const authController = require("../controller/user");
 
-}
-*/
-router.post('/register', userController.signup);
-router.post('/login', userController.login);
+router.post(
+  "/signup",
+  signupValidator,
+  asyncHandler(validateEmail),
+  asyncHandler(authController.signup)
+);
+router.post("/signin", signinValidator, asyncHandler(authController.signin));
 
 module.exports = router;

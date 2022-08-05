@@ -1,25 +1,18 @@
 const express = require("express");
 const cors = require("cors");
-const mongoose = require("mongoose");
-const path = require("path");
-const userRouter = require("./routes/user");
-const bodyParser = require("body-parser");
+// const path = require("path");
+const authRouter = require("./routes/user");
+// const { loggers } = require("winston");
+const morgan = require("morgan");
+const { logger, httpLogStream } = require("./utils/logger");
 require("dotenv").config();
 
-/*
-mongoose.set('useCreateIndex', true);
-mongoose.connect(process.env.DB_URI, {useNewUrlParser: true, useUnifiedTopology: true})
-    .then(() => {
-        console.log('Successfully connected to the Database!');
-    })
-    .catch((error) => {
-        console.log('Unable to connect to the Database!');
-        console.error(error);
-    });
-*/
 const app = express();
 app.use(cors());
-app.use(bodyParser.json());
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(morgan("dev"));
+app.use(morgan("combined", { stream: httpLogStream }));
 
 /*
 app.use((req, res, next) => {
@@ -37,18 +30,34 @@ app.use((req, res, next) => {
 */
 
 //app.use('/images', express.static(path.join(__dirname, 'images')));
-app.use("/api", userRouter);
+app.use("/api", authRouter);
 
 // base route, for test purposes
 app.get("/", (req, res, next) => {
-  res.send("Welcome to the backend!");
+  // res.sendStatus(200).send({
+  //   status: "success",
+  //   data: {
+  //     message: "API working fine!",
+  //   },
+  // });
+  res.status(200).send({
+    msg: "API working fine!",
+  });
+  console.log("API working fine!");
+});
+
+app.use((err, req, res, next) => {
+  res.status(err.statusCode || 500).send({
+    status: "error",
+    message: err.message,
+  });
   next();
 });
 
 // creates an express server
 const port = process.env.PORT;
 app.listen(port, () => {
-  console.log(`Server running on http://localhost:${port}`);
+  logger.info(`Server running on http://localhost:${port}`);
 });
 
 module.exports = app;
