@@ -1,10 +1,8 @@
 const express = require("express");
 const cors = require("cors");
-// const path = require("path");
-const authRouter = require("./routes/user");
-// const { loggers } = require("winston");
 const morgan = require("morgan");
 const { logger, httpLogStream } = require("./utils/logger");
+const authRouter = require("./routes/user");
 require("dotenv").config();
 
 const app = express();
@@ -14,26 +12,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use(morgan("dev"));
 app.use(morgan("combined", { stream: httpLogStream }));
 
-/*
-app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content, Accept, Content-Type, Authorization"
-  );
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "GET, POST, PUT, DELETE, PATCH, OPTIONS"
-  );
-  next();
-});
-*/
-
-//app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use("/api", authRouter);
 
 // base route, for test purposes
-app.get("/", (req, res, next) => {
+app.get("/", (req, res) => {
   // res.sendStatus(200).send({
   //   status: "success",
   //   data: {
@@ -55,9 +37,9 @@ app.use((err, req, res, next) => {
 });
 
 // creates an express server
-const port = process.env.PORT;
+const port = process.env.PORT || 5000;
 app.listen(port, () => {
-  logger.info(`Server running on http://localhost:${port}`);
+  logger.info(`API running on http://localhost:${port}`);
 });
 
 module.exports = app;

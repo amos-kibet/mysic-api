@@ -1,4 +1,4 @@
-const mysql = require("mysql2");
+const mysql = require("mysql");
 const { logger } = require("../utils/logger");
 const { DB_HOST, DB_USER, DB_PASS } = require("../utils/secrets");
 

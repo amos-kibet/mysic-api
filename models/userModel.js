@@ -15,7 +15,7 @@ class User {
   static create(newUser, callback) {
     db.query(
       createNewUserQuery,
-      [newUser.firstname, newUser.lastname, newUser.email, newUser.password],
+      [newUser.username, newUser.email, newUser.password],
       (err, res) => {
         if (err) {
           logger.error(err.message);
@@ -24,8 +24,7 @@ class User {
         }
         callback(null, {
           id: res.insertId,
-          firstname: newUser.firstname,
-          lastname: newUser.lastname,
+          username: newUser.username,
           email: newUser.email,
         });
       }
