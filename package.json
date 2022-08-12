@@ -1,7 +1,7 @@
 {
-  "name": "mysic api",
+  "name": "mysic-api",
   "version": "1.0.0",
-  "description": "",
+  "description": "API for mysic web and mobile app",
   "main": "app.js",
   "scripts": {
     "start": "nodemon app.js",
@@ -10,7 +10,7 @@
     "tables:up": "node database/scripts/tablesUp.js",
     "db:init": "npm run db:up && npm run tables:up"
   },
-  "author": "",
+  "author": "Amos Kibet",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.0.0",

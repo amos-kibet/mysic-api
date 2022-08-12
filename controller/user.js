@@ -1,4 +1,3 @@
-// @ts-nocheck
 const User = require("../models/userModel");
 const {
   hash: hashPassword,
@@ -13,7 +12,6 @@ exports.signup = (req, res) => {
   const user = new User(username.trim(), email.trim(), hashedPassword);
 
   User.create(user, (err, data) => {
-    console.log(user.hashedPassword);
     if (err) {
       res.status(500).send({
         status: "error",

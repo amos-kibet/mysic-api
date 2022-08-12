@@ -4,7 +4,7 @@ const createDB = `CREATE DATABASE IF NOT EXISTS ${DB_NAME}`;
 
 const dropDB = `DROP DATABASE IF EXISTS ${DB_NAME}`;
 
-const createTableUSers = `
+const createTableUsers = `
 CREATE TABLE IF NOT EXISTS users (
     id INT PRIMARY KEY AUTO_INCREMENT,
     username VARCHAR(50) NOT NULL,
@@ -25,7 +25,7 @@ SELECT * FROM users WHERE email = ?
 module.exports = {
   createDB,
   dropDB,
-  createTableUSers,
+  createTableUsers,
   createNewUser,
   findUserByEmail,
 };
