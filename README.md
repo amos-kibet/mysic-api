@@ -7,8 +7,8 @@
 
 ## API endpoints
 
-1. `POST /api/auth/signup`: Creates a new user
-2. `POST /api/auth/signin`: Logs in a user
+1. `POST /api/signup`: Creates a new user
+2. `POST /api/signin`: Logs in a user
 
 ## Body Payload Specification
 
@@ -16,8 +16,7 @@ Signup expects
 
 ```js
 {
-    firstname: string,
-    lastname: string,
+    username: string,
     email: string,
     password: string
 }
@@ -55,13 +54,13 @@ Signin expects
 You can either fork this repository or clone it by starting your terminal, then change the directory to where you would like to save it and run
 
 ```sh
-git clone https://github.com/desirekaleba/node-mysql-jwt-auth.git
+git clone https://github.com/amos-kibet/mysic-api.git
 ```
 
 Change to the newly downloaded directory with
 
 ```sh
-cd node-mysql-jwt-auth
+cd mysic-api
 ```
 
 Rename the file named `.env.example` to `.env` and update the variable values with valid ones
@@ -97,33 +96,31 @@ npm run start:dev
 README.md
 package-lock.json
 package.json
-src
-├── app.js
-├── config
-│   ├── db.config.init.js
-│   └── db.config.js
-├── controllers
-│   └── auth.controller.js
-├── database
-│   ├── queries.js
-│   └── scripts
-│       ├── dbDown.js
-│       ├── dbUp.js
-│       └── tablesUp.js
-├── index.js
-├── middlewares
-│   ├── asyncHandler.js
-│   ├── checkEmail.js
-│   └── validatorHandler.js
-├── models
-│   └── user.model.js
-├── routes
-│   └── auth.route.js
-├── utils
-│   ├── logger.js
-│   ├── password.js
-│   ├── secrets.js
-│   └── token.js
-└── validators
-    └── auth.js
+app.js
+config
+   ├── db.config.init.js
+   └── db.config.js
+controllers
+   └── auth.controller.js
+database
+   ├── queries.js
+   └── scripts
+       ├── dbDown.js
+       ├── dbUp.js
+       └── tablesUp.js
+middlewares
+   ├── asyncHandler.js
+   ├── checkEmail.js
+   └── validatorHandler.js
+models
+   └── userModel.js
+routes
+   └── auth.user.js
+utils
+   ├── logger.js
+   ├── password.js
+   ├── secrets.js
+   └── token.js
+validators
+   └── auth.js
 ```
