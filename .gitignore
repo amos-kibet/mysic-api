@@ -5,3 +5,4 @@ server.js
 /logs
 package-lock.json
 /.idea
+/dump
