@@ -45,8 +45,12 @@ app.get("/", (req, res, next) => {
   next();
 });
 
+<<<<<<< Updated upstream
 // creates an express server
 const port = process.env.PORT;
+=======
+const port = process.env.PORT || 5000;
+>>>>>>> Stashed changes
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
 });
