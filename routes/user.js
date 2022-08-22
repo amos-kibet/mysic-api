@@ -9,12 +9,14 @@ const {
 
 const authController = require("../controller/user");
 
+
 router.post(
   "/signup",
   signupValidator,
   asyncHandler(validateEmail),
   asyncHandler(authController.signup)
 );
+router.post("/auth/verify/:id", authController.verifyEmail)
 router.post("/signin", signinValidator, asyncHandler(authController.signin));
 
 module.exports = router;
