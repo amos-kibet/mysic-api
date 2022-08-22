@@ -2,6 +2,13 @@
 ReadmeDump.md
 server.js
 /node_modules
+<<<<<<< HEAD
 /dump
 /logs
 /.idea
+=======
+/logs
+package-lock.json
+/.idea
+/dump
+>>>>>>> main
