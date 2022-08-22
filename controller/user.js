@@ -4,6 +4,7 @@ const {
   compare: comparePassword,
 } = require("../utils/password");
 const { generate: generateToken } = require("../utils/token");
+const { sendVerificationEmail } = require("../utils/validateUserEmail");
 
 exports.signup = (req, res) => {
   const { username, email, password } = req.body;
@@ -27,6 +28,7 @@ exports.signup = (req, res) => {
         },
       });
     }
+    sendVerificationEmail(email, data.id);
   });
 };
 
@@ -67,3 +69,4 @@ exports.signin = (req, res) => {
     }
   });
 };
+export const verifyEmail = async (req, res) => {};
