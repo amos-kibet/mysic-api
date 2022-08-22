@@ -36,16 +36,8 @@ app.use((err, req, res, next) => {
   next();
 });
 
-<<<<<<< Updated upstream
-// creates an express server
-<<<<<<< HEAD
-const port = process.env.PORT;
-=======
 const port = process.env.PORT || 5000;
->>>>>>> Stashed changes
-=======
-const port = process.env.PORT || 5000;
->>>>>>> main
+
 app.listen(port, () => {
   logger.info(`API running on http://localhost:${port}`);
 });
