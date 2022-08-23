@@ -1,2 +1,9 @@
 .env
 ReadmeDump.md
+server.js
+/node_modules
+/logs
+package-lock.json
+/.idea
+/dump
+/.history
