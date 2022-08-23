@@ -45,20 +45,20 @@
 #           - 3306
 #         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
-#     steps:
-#       - uses: actions/checkout@v1
-#       - name: Use Node.js ${{ matrix.node-version }}
-#         uses: actions/setup-node@v1
-#         with:
-#           node-version: ${{ matrix.node-version }}
-#       - name: npm install, build, and test
-#         run: |
-#           npm install
-#           sudo service mysql start
-#           mysql --host 127.0.0.1 --port ${{ job.services.mysql.ports['3306'] }} -uroot -ppassword < etc/original.sql
-#           mysql --host 127.0.0.1 --port ${{ job.services.mysql.ports['3306'] }} -uroot -ppassword -e "SHOW DATABASES"
-#           node scripts/ci ${{ job.services.mysql.ports['3306'] }}
-#           npm run setup
+# steps:
+#   - uses: actions/checkout@v1
+#   - name: Use Node.js ${{ matrix.node-version }}
+#     uses: actions/setup-node@v1
+#     with:
+#       node-version: ${{ matrix.node-version }}
+#   - name: npm install, build, and test
+#     run: |
+#       npm install
+#       sudo service mysql start
+#       mysql --host 127.0.0.1 --port ${{ job.services.mysql.ports['3306'] }} -uroot -ppassword < etc/original.sql
+#       mysql --host 127.0.0.1 --port ${{ job.services.mysql.ports['3306'] }} -uroot -ppassword -e "SHOW DATABASES"
+#       node scripts/ci ${{ job.services.mysql.ports['3306'] }}
+#       npm run setup
 
 name: mysic-api CI
 env:
@@ -92,11 +92,11 @@ jobs:
           --health-retries=3
     steps:
       - uses: actions/checkout@v2
-      - name: Install packages
-        run: "npm ci"
-      - name: Setup Database
-        run: sudo service mysql start
-      - name: COntinue DB Setup
-        run: "npm run migrations"
-      - name: Run Tests
-        run: "npm run test"
+      - name: npm install, build, and test
+        run: |
+          npm install
+          sudo service mysql start
+          mysql --host 127.0.0.1 --port ${{ job.services.mysql.ports['3306'] }} -uroot -ppassword < etc/original.sql
+          mysql --host 127.0.0.1 --port ${{ job.services.mysql.ports['3306'] }} -uroot -ppassword -e "SHOW DATABASES"
+          node scripts/ci ${{ job.services.mysql.ports['3306'] }}
+          npm run setup
