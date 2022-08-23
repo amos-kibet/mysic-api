@@ -51,7 +51,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: npm install, build, and test
         run: |
-          cp ./config.json.example config.json
+          cp ../../config/config.json.example config.json
           npm install
           sudo service mysql start
           mysql --host 127.0.0.1 --port ${{ job.services.mysql.ports['3306'] }} -uroot -ppassword < etc/original.sql
