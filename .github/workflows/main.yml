@@ -31,9 +31,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [8.x, 10.x, 12.x, 14.x, 16.x]
+    # strategy:
+    #   matrix:
+    #     node-version: [8.x, 10.x, 12.x, 14.x, 16.x]
     services:
       mysql:
         image: mysql:5.7
