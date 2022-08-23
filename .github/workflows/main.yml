@@ -24,7 +24,7 @@ name: mysic-api CI
 
 on:
   push:
-    branches: ["main"]
+    branches: ["amos-kibet-github-actions-patch-1"]
   pull_request:
     branches: ["main"]
 
