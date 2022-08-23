@@ -1,6 +1,8 @@
+// @ts-nocheck
 const jwt = require("jsonwebtoken");
 const { JWT_SECRET_KEY } = require("../utils/secrets");
 const { logger } = require("./logger");
+require("dotenv").config();
 
 const generate = (id) => jwt.sign({ id }, JWT_SECRET_KEY, { expiresIn: "1d" });
 

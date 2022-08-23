@@ -15,6 +15,8 @@ router.post(
   asyncHandler(validateEmail),
   asyncHandler(authController.signup)
 );
+// router.post("/auth/verify/:id", authController.verifyEmail)
+router.get("/confirm/?:id", authController.verifyEmail);
 router.post("/signin", signinValidator, asyncHandler(authController.signin));
 
 module.exports = router;

@@ -1,9 +1,16 @@
+// @ts-nocheck
+const connection = require("../config/db.config");
+// @ts-ignore
+const { findUserByEmail } = require("../database/queries");
+// @ts-ignore
+const { findByEmail } = require("../models/userModel");
 const User = require("../models/userModel");
 const {
   hash: hashPassword,
   compare: comparePassword,
 } = require("../utils/password");
 const { generate: generateToken } = require("../utils/token");
+const sendVerificationEmail = require("../utils/validateUserEmail");
 
 exports.signup = (req, res) => {
   const { username, email, password } = req.body;
@@ -18,7 +25,7 @@ exports.signup = (req, res) => {
         message: err.message,
       });
     } else {
-      const token = generateToken(data.id);
+      const token = generateToken(user);
       res.status(201).send({
         status: "success",
         data: {
@@ -27,6 +34,22 @@ exports.signup = (req, res) => {
         },
       });
     }
+    // @ts-ignore
+    connection.query(
+      "SELECT * FROM users WHERE email = ?",
+      email,
+      (err, result) => {
+        if (err) {
+          // @ts-ignoreS
+          throw Error(err);
+        }
+
+        const id = result[0].id;
+        sendVerificationEmail(email, id);
+      }
+    );
+
+    // @ts-ignore
   });
 };
 
@@ -67,3 +90,22 @@ exports.signin = (req, res) => {
     }
   });
 };
+// exports const verifyEmail = async (req, res) => {};
+// @ts-ignore
+exports.verifyEmail = async (req, res) => {
+  const { id } = req.query;
+  try {
+    connection.query("SELECT * FROM users WHERE id=?", id, (err, result) => {
+      if (err) {
+        // @ts-ignore
+        throw Error(err);
+      }
+      result[0].isActive = true;
+    });
+  } catch (err) {
+    return err.message;
+  }
+};
+function err(err) {
+  throw new Error("Function not implemented.");
+}
