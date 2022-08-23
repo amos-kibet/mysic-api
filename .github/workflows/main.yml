@@ -1,62 +1,100 @@
-# name: CI
+# # name: CI
+
+# # on:
+# #   push:
+# #     branches: ["main"]
+# #   pull_request:
+# #     branches: ["main"]
+
+# #   # Allows you to run this workflow manually from the Actions tab
+# #   workflow_dispatch:
+
+# # jobs:
+# #   build:
+# #     runs-on: ubuntu-latest
+# #     steps:
+# #       - uses: actions/checkout@v3
+
+# #       - name: Run a multi-line script
+# #         run: |
+# #           cp ../../config/config.json.example config.json
+
+# #           npm install,
+# #           npm start.
+
+# name: mysic-api CI
 
 # on:
 #   push:
-#     branches: ["main"]
+#     branches: ["amos-kibet-github-actions-patch-1"]
 #   pull_request:
 #     branches: ["main"]
-
-#   # Allows you to run this workflow manually from the Actions tab
-#   workflow_dispatch:
 
 # jobs:
 #   build:
 #     runs-on: ubuntu-latest
+#     # strategy:
+#     #   matrix:
+#     #     node-version: [8.x, 10.x, 12.x, 14.x, 16.x]
+#     services:
+#       mysql:
+#         image: mysql:5.7
+#         env:
+#           MYSQL_ROOT_PASSWORD: password
+#         ports:
+#           - 3306
+#         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
 #     steps:
-#       - uses: actions/checkout@v3
-
-#       - name: Run a multi-line script
+#       - uses: actions/checkout@v1
+#       - name: Use Node.js ${{ matrix.node-version }}
+#         uses: actions/setup-node@v1
+#         with:
+#           node-version: ${{ matrix.node-version }}
+#       - name: npm install, build, and test
 #         run: |
-#           cp ../../config/config.json.example config.json
-
-#           npm install,
-#           npm start.
+#           npm install
+#           sudo service mysql start
+#           mysql --host 127.0.0.1 --port ${{ job.services.mysql.ports['3306'] }} -uroot -ppassword < etc/original.sql
+#           mysql --host 127.0.0.1 --port ${{ job.services.mysql.ports['3306'] }} -uroot -ppassword -e "SHOW DATABASES"
+#           node scripts/ci ${{ job.services.mysql.ports['3306'] }}
+#           npm run setup
 
 name: mysic-api CI
-
+env:
+  MYSQL_DATABASE: test_db
+  MYSQL_USER: test_user
+  MYSQL_PASSWORD: password
+  MYSQL_HOST: mysql-master
+  NODE_ENV: test
 on:
   push:
-    branches: ["amos-kibet-github-actions-patch-1"]
-  pull_request:
-    branches: ["main"]
-
 jobs:
-  build:
+  ci:
     runs-on: ubuntu-latest
-    # strategy:
-    #   matrix:
-    #     node-version: [8.x, 10.x, 12.x, 14.x, 16.x]
+    container:
+      image: node:14.5.0-alpine
     services:
-      mysql:
+      mysql-master:
         image: mysql:5.7
-        env:
-          MYSQL_ROOT_PASSWORD: password
         ports:
-          - 3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
-
+          - 3306/tcp
+        env:
+          MYSQL_DATABASE: ${{ env.MYSQL_DATABASE }}
+          MYSQL_USER: ${{ env.MYSQL_USER }}
+          MYSQL_PASSWORD: ${{ env.MYSQL_PASSWORD }}
+          MYSQL_ROOT_PASSWORD: ${{ env.MYSQL_PASSWORD }}
+        options: >-
+          --name=mysql-master
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
     steps:
-      - uses: actions/checkout@v1
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
-      - name: npm install, build, and test
-        run: |
-          npm install
-          sudo service mysql start
-          mysql --host 127.0.0.1 --port ${{ job.services.mysql.ports['3306'] }} -uroot -ppassword < etc/original.sql
-          mysql --host 127.0.0.1 --port ${{ job.services.mysql.ports['3306'] }} -uroot -ppassword -e "SHOW DATABASES"
-          #This command adds the proper mysql port to the config file
-          node scripts/ci ${{ job.services.mysql.ports['3306'] }}
-          npm run setup
+      - uses: actions/checkout@v2
+      - name: Install packages
+        run: "npm ci"
+      - name: Setup Database
+        run: "npm run migrations"
+      - name: Run Tests
+        run: "npm run test"
