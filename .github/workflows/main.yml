@@ -96,7 +96,7 @@ jobs:
         run: |
           npm install
           sudo service mysql start
-          mysql --host 127.0.0.1 --port ${{ job.services.mysql.ports['3306'] }} -uroot -ppassword < etc/original.sql
-          mysql --host 127.0.0.1 --port ${{ job.services.mysql.ports['3306'] }} -uroot -ppassword -e "SHOW DATABASES"
+          mysql --host 127.0.0.1 --port ${{ job.services.mysql.ports['3306'] }} -u: root -p: password < etc/original.sql
+          mysql --host 127.0.0.1 --port ${{ job.services.mysql.ports['3306'] }} -u: root -p: password -e "SHOW DATABASES"
           node scripts/ci ${{ job.services.mysql.ports['3306'] }}
           npm run setup
