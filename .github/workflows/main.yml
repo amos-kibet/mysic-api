@@ -94,9 +94,7 @@ jobs:
       - uses: actions/checkout@v2
       - name: npm install, build, and test
         run: |
-          npm install
+          npm ci
+          npm run db:init
           sudo service mysql start
-          mysql --host 127.0.0.1 --port ${{ job.services.mysql.ports['3306'] }} -u: root -p: password < etc/original.sql
-          mysql --host 127.0.0.1 --port ${{ job.services.mysql.ports['3306'] }} -u: root -p: password -e "SHOW DATABASES"
-          node scripts/ci ${{ job.services.mysql.ports['3306'] }}
-          npm run setup
+          mysql --host 127.0.0.1 --port ${{ job.services.mysql.ports['3306'] }} -uroot -p password
