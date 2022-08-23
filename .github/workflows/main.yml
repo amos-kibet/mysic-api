@@ -95,6 +95,8 @@ jobs:
       - name: Install packages
         run: "npm ci"
       - name: Setup Database
+        run: sudo service mysql start
+      - name: COntinue DB Setup
         run: "npm run migrations"
       - name: Run Tests
         run: "npm run test"
