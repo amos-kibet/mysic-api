@@ -17,7 +17,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(morgan("dev"));
 
 app.use("/api", authRouter);
-app.use("/api/", songsRouter);
+app.use("/api", songsRouter);
 
 // base route, for test purposes
 app.get("/", (req, res) => {

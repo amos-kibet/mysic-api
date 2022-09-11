@@ -1,6 +1,7 @@
+// @ts-nocheck
 import dotenv from "dotenv";
 import axios from "axios";
-import { Songs } from "../../models/Songs.js";
+import { Song } from "../models/Songs.js";
 dotenv.config();
 
 const api = process.env.MUSIC_API;
@@ -16,7 +17,7 @@ export const songsController = async (req, res) => {
       songsArray.push(response);
     }
     songsArray.forEach(async (songs) => {
-      const songsDataSaved = await Songs.insertMany({
+      const songsDataSaved = await Song.insertMany({
         trackName: songs.trackName,
         trackUri: songs.trackUri,
         displayImage: songs.displayImageUri,
@@ -36,11 +37,11 @@ export const songsController = async (req, res) => {
 };
 export const getAllSongs = async (req, res) => {
   try {
-    const songs = await Songs.find({}).exec();
+    const songs = await Song.find({}).exec();
     if (!songs) {
       res.status(500).json({ message: "no songs found" });
     }
-    res.status(200).json({songs });
+    res.status(200).json({ songs });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
