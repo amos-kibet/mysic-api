@@ -1,9 +1,10 @@
-# NodeJS Auth REST API example with Express, Mysql, and JWT
+# mysic API
 
 ## Features
 
 1. User can sign up
 2. User can sign in
+3. User can stream music
 
 ## API endpoints
 
