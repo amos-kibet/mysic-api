@@ -1,14 +1,16 @@
-# NodeJS Auth REST API example with Express, Mysql, and JWT
+# mysic API
 
 ## Features
 
 1. User can sign up
 2. User can sign in
+3. User can stream music
 
 ## API endpoints
 
 1. `POST /api/signup`: Creates a new user
 2. `POST /api/signin`: Logs in a user
+3. `GET /api/all/songs`: Gets songs as JSON file
 
 ## Body Payload Specification
 
@@ -34,7 +36,7 @@ Signin expects
 ## Tools
 
 - NodeJS/Express: Server
-- MySQL: Storage
+- MongoDB: Storage
 - JWT: Token based authentication
 - bcryptjs: Password security
 - winston/morgan: Logs
@@ -44,10 +46,6 @@ Signin expects
 
 - `start`: Starts the server with node
 - `start:dev`: Starts the server in watch mode
-- `db:up`: Creates the database
-- `db:down`: Drops the database
-- `tables:up`: Creates database tables
-- `db:init`: Creates both the database and tables
 
 ## Getting started
 
@@ -71,12 +69,6 @@ Install the required dependencies with
 npm install
 ```
 
-Initialize the database with
-
-```sh
-npm run db:init
-```
-
 Start the app with
 
 ```sh
@@ -87,40 +79,4 @@ You can also start it in watch mode with
 
 ```sh
 npm run start:dev
-```
-
-## Folder structure
-
-```sh
-.
-README.md
-package-lock.json
-package.json
-app.js
-config
-   ├── db.config.init.js
-   └── db.config.js
-controllers
-   └── auth.controller.js
-database
-   ├── queries.js
-   └── scripts
-       ├── dbDown.js
-       ├── dbUp.js
-       └── tablesUp.js
-middlewares
-   ├── asyncHandler.js
-   ├── checkEmail.js
-   └── validatorHandler.js
-models
-   └── userModel.js
-routes
-   └── auth.user.js
-utils
-   ├── logger.js
-   ├── password.js
-   ├── secrets.js
-   └── token.js
-validators
-   └── auth.js
 ```

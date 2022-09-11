@@ -3,16 +3,15 @@
   "version": "1.0.0",
   "description": "API for mysic web and mobile app",
   "main": "app.js",
+  "type": "module",
   "scripts": {
-    "start": "nodemon app.js",
-    "db:up": "node database/scripts/dbUp.js",
-    "db:down": "node database/scripts/dbDown.js",
-    "tables:up": "node database/scripts/tablesUp.js",
-    "db:init": "npm run db:up && npm run tables:up"
+    "start": "node app.js",
+    "dev": "nodemon app.js"
   },
-  "author": "Amos Kibet",
+  "authors": "Amos Kibet, Peter Tepela",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.27.2",
     "bcrypt": "^5.0.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
@@ -21,10 +20,12 @@
     "express": "^4.17.1",
     "joi": "^17.6.0",
     "jsonwebtoken": "^8.5.1",
+    "mogoose": "^0.0.1-security",
     "mongoose": "^6.5.1",
     "mongoose-unique-validator": "^3.1.0",
     "morgan": "^1.10.0",
     "mysql": "^2.18.1",
+    "nodemailer": "^6.7.8",
     "process": "latest",
     "update": "^0.4.2"
   },
