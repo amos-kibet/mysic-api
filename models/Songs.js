@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
-import dotenv from "dotenv";
+// import dotenv from "dotenv";
 
-dotenv.config();
+// dotenv.config();
 
 const songsSchema = new mongoose.Schema({
   trackName: {
@@ -26,4 +26,4 @@ const songsSchema = new mongoose.Schema({
   },
 });
 
-export const Songs = mongoose.model("Songs", songsSchema);
+export const Song = mongoose.model("Songs", songsSchema);

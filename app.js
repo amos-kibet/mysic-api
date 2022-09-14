@@ -17,7 +17,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(morgan("dev"));
 
 app.use("/api", authRouter);
-app.use("/api/", songsRouter);
+app.use("/api", songsRouter);
 
 // base route, for test purposes
 app.get("/", (req, res) => {
@@ -35,8 +35,8 @@ app.use((err, req, res, next) => {
   next();
 });
 
-// creates an express server
 const port = process.env.PORT || 5000;
+
 app.listen(port, () => {
   console.log(`API running on http://localhost:${port}`);
 });
