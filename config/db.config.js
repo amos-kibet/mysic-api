@@ -5,6 +5,8 @@ dotenv.config();
 const uri = process.env.MONGO_URI;
 const options = {
   dbName: "data",
+  // useNewUrlParser: true,
+  // useUnifiedTopology: true,
 };
 export const dbConnect = () => {
   mongoose
