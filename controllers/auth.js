@@ -3,7 +3,7 @@
 
 import { User } from "../models/User.js";
 import { hash, compare } from "../utils/password.js";
-import { sendConfirmationEmail } from "../utils/email.js";
+import { sendConfirmationEmail, confirmedEmail } from "../utils/email.js";
 
 export const signUpController = async (req, res) => {
   const { username, email, password } = req.body;
@@ -23,6 +23,7 @@ export const signUpController = async (req, res) => {
       username: username,
       email: email,
       password: hash(password),
+      confirmedEmail: confirmedEmail(),
     });
 
     user
@@ -59,6 +60,11 @@ export const signInController = async (req, res) => {
     }
     if (data) {
       try {
+        if (data.confirmedEmail == false) {
+          return res.status(403).json({
+            message: "Email address not confirmed",
+          });
+        }
         if (compare(password, data.password)) {
           return res.status(200).json({
             success: "Login successful",
