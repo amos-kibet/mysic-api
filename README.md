@@ -1,5 +1,10 @@
 # mysic API
 
+## Get all songs
+```
+https://api-ibambe.onrender.com/api/all/songs
+```
+
 ## Features
 
 1. User can sign up
