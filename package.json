@@ -5,7 +5,8 @@
   "main": "app.js",
   "type": "module",
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "dev": "nodemon app.js"
   },
   "authors": "Amos Kibet, Peter Tepela",
   "license": "ISC",
@@ -29,6 +30,7 @@
     "update": "^0.7.4"
   },
   "devDependencies": {
+    "nodemon": "^2.0.20",
     "winston": "^3.8.1"
   }
 }
