@@ -2,16 +2,15 @@
 // import bcrypt from "bcrypt";
 
 import { User } from "../models/User.js";
-
 import { hash, compare } from "../utils/password.js";
+import { sendConfirmationEmail, confirmedEmail } from "../utils/email.js";
 
 export const signUpController = async (req, res) => {
   const { username, email, password } = req.body;
   await User.findOne({ email }, (err, data) => {
-    console.log(data);
     if (err) {
       return res.status(500).json({
-        error: err.message,
+        error: `Server error message 1: ${err.message}`,
       });
     }
     if (data) {
@@ -24,6 +23,7 @@ export const signUpController = async (req, res) => {
       username: username,
       email: email,
       password: hash(password),
+      confirmedEmail: confirmedEmail(),
     });
 
     user
@@ -31,20 +31,23 @@ export const signUpController = async (req, res) => {
       .then(() => {
         return res.status(201).json({
           success: "User created successfully",
+          // alternate place to send email confirmation
         });
       })
       .catch((err) => {
         return res.status(500).json({
-          error: err.message,
+          error: `Server error message 2: ${err.message}`,
         });
       });
-  });
+    // sends confirmation code to user's email
+    sendConfirmationEmail(email);
+  }).clone();
 };
 
 export const signInController = async (req, res) => {
   const { email, password } = req.body;
 
-  User.findOne({ email }, (err, data) => {
+  await User.findOne({ email }, (err, data) => {
     if (err) {
       if (err.kind == "not_found") {
         return res.status(404).json({
@@ -52,11 +55,16 @@ export const signInController = async (req, res) => {
         });
       }
       return res.status(500).json({
-        error: err.message,
+        error: `Server error message 1: ${err.message}`,
       });
     }
     if (data) {
       try {
+        if (data.confirmedEmail == false) {
+          return res.status(403).json({
+            message: "Email address not confirmed",
+          });
+        }
         if (compare(password, data.password)) {
           return res.status(200).json({
             success: "Login successful",
@@ -69,5 +77,5 @@ export const signInController = async (req, res) => {
         return error;
       }
     }
-  });
+  }).clone();
 };
