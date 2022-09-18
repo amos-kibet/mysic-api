@@ -2,6 +2,7 @@
 import dotenv from "dotenv";
 import axios from "axios";
 import { Song } from "../models/Songs.js";
+import { getAllDocuments } from "../utils/crud.js";
 dotenv.config();
 
 const api = process.env.MUSIC_API;
@@ -35,14 +36,5 @@ export const songsController = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
-export const getAllSongs = async (req, res) => {
-  try {
-    const songs = await Song.find({}).exec();
-    if (!songs) {
-      res.status(500).json({ message: "no songs found" });
-    }
-    res.status(200).json({ songs });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-};
+
+export const getAllSongs = getAllDocuments(Song)
