@@ -5,7 +5,6 @@ import dotenv from "dotenv";
 import { dbConnect } from "./config/db.config.js";
 import { authRouter } from "./routes/user.js";
 import { songsRouter } from "./routes/songs.js";
-import cookieParser from 'cookie-parser'
 import { adminUserManagement } from "./routes/admin/usersManagement.js";
 // import { redisConnection } from "./config/redis.conect.js";
 
@@ -20,7 +19,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(morgan("dev"));
-app.use(cookieParser())
+
 
 app.use("/api", authRouter);
 app.use("/api", songsRouter);
