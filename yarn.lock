@@ -3663,7 +3663,7 @@
   "resolved" "https://registry.npmjs.org/mime/-/mime-1.6.0.tgz"
   "version" "1.6.0"
 
-"minimatch@^3.0.4", "minimatch@^3.1.1", "minimatch@2 || 3":
+"minimatch@^3.1.1", "minimatch@^3.1.2", "minimatch@2 || 3":
   "integrity" "sha512-J7p63hRiAjw1NDEww1W7i37+ByIrOWO5XQQAzZ3VOcL0PNybwpfmV/N05zFAzwQ9USyEcX6t3UO+K5aqBQOIHw=="
   "resolved" "https://registry.npmjs.org/minimatch/-/minimatch-3.1.2.tgz"
   "version" "3.1.2"
@@ -3869,15 +3869,15 @@
   "resolved" "https://registry.npmjs.org/nodemailer/-/nodemailer-6.7.8.tgz"
   "version" "6.7.8"
 
-"nodemon@^2.0.19":
-  "integrity" "sha512-4pv1f2bMDj0Eeg/MhGqxrtveeQ5/G/UVe9iO6uTZzjnRluSA4PVWf8CW99LUPwGB3eNIA7zUFoP77YuI7hOc0A=="
-  "resolved" "https://registry.npmjs.org/nodemon/-/nodemon-2.0.19.tgz"
-  "version" "2.0.19"
+"nodemon@^2.0.20":
+  "integrity" "sha512-Km2mWHKKY5GzRg6i1j5OxOHQtuvVsgskLfigG25yTtbyfRGn/GNvIbRyOf1PSCKJ2aT/58TiuUsuOU5UToVViw=="
+  "resolved" "https://registry.npmjs.org/nodemon/-/nodemon-2.0.20.tgz"
+  "version" "2.0.20"
   dependencies:
     "chokidar" "^3.5.2"
     "debug" "^3.2.7"
     "ignore-by-default" "^1.0.1"
-    "minimatch" "^3.0.4"
+    "minimatch" "^3.1.2"
     "pstree.remy" "^1.1.8"
     "semver" "^5.7.1"
     "simple-update-notifier" "^1.0.7"
