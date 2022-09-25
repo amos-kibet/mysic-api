@@ -2,49 +2,62 @@
 // import bcrypt from "bcrypt";
 
 import { User } from "../models/User.js";
-
 import { hash, compare } from "../utils/password.js";
+import { sendConfirmationEmail, confirmedEmail } from "../utils/email.js";
+import Jwt from "jsonwebtoken";
+import cookie from 'cookie'
 
-export const signUpController = async (req, res) => {
+
+export const signUpController = (req, res) => {
   const { username, email, password } = req.body;
-  await User.findOne({ email }, (err, data) => {
-    console.log(data);
+  User.findOne({ email }, async (err, data) => {
     if (err) {
       return res.status(500).json({
-        error: err.message,
+        error: `Server error message 1: ${err.message}`,
       });
     }
     if (data) {
       return res.status(401).json({
         error: "Email already in use",
-      });
+      })
     }
 
     const user = new User({
       username: username,
       email: email,
       password: hash(password),
+
     });
 
-    user
+    await user
       .save()
-      .then(() => {
-        return res.status(201).json({
-          success: "User created successfully",
-        });
+      .then((data) => {
+        const token = Jwt.sign({ id: data._id }, 'dhfrurfeufe');
+        res.setHeader(
+          "Set-Cookie",
+          cookie.serialize("mysic_acces_token", token, {
+            httpOnly: true,
+            maxAge: 2 * 60 * 60,
+            path: "/",
+            // sameSite: "mysic",
+            secure: process.env.NODE_ENV === "production",
+          })
+        )
+        sendConfirmationEmail(email, user._id);
+        res.json(data)
       })
       .catch((err) => {
         return res.status(500).json({
-          error: err.message,
+          error: `Server error message 2: ${err.message}`,
         });
       });
-  });
+  }).clone();
 };
 
 export const signInController = async (req, res) => {
   const { email, password } = req.body;
 
-  User.findOne({ email }, (err, data) => {
+  await User.findOne({ email }, (err, data) => {
     if (err) {
       if (err.kind == "not_found") {
         return res.status(404).json({
@@ -52,11 +65,16 @@ export const signInController = async (req, res) => {
         });
       }
       return res.status(500).json({
-        error: err.message,
+        error: `Server error message 1: ${err.message}`,
       });
     }
     if (data) {
       try {
+        if (data.confirmedEmail == false) {
+          return res.status(403).json({
+            message: "Email address not confirmed",
+          });
+        }
         if (compare(password, data.password)) {
           return res.status(200).json({
             success: "Login successful",
@@ -69,5 +87,5 @@ export const signInController = async (req, res) => {
         return error;
       }
     }
-  });
+  }).clone();
 };

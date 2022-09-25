@@ -5,10 +5,14 @@ import dotenv from "dotenv";
 import { dbConnect } from "./config/db.config.js";
 import { authRouter } from "./routes/user.js";
 import { songsRouter } from "./routes/songs.js";
+import { adminUserManagement } from "./routes/admin/usersManagement.js";
+// import { redisConnection } from "./config/redis.conect.js";
+
 
 dotenv.config();
 
 dbConnect();
+// redisConnection()
 
 const app = express();
 app.use(cors());
@@ -16,8 +20,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(morgan("dev"));
 
+
 app.use("/api", authRouter);
 app.use("/api", songsRouter);
+app.use("/api", adminUserManagement)
 
 // base route, for test purposes
 app.get("/", (req, res) => {
