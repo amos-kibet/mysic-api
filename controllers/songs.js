@@ -3,6 +3,10 @@ import dotenv from "dotenv";
 import axios from "axios";
 import { Song } from "../models/Songs.js";
 import { getAllDocuments } from "../utils/crud.js";
+
+
+import {loggers} from "winston";
+import {logger} from "../utils/log.js";
 dotenv.config();
 
 const api = process.env.MUSIC_API;
@@ -17,22 +21,24 @@ export const songsController = async (req, res) => {
       const response = i.trackMetadata;
       songsArray.push(response);
     }
-    songsArray.forEach(async (songs) => {
+    for (const songs1 of songsArray) {
       const songsDataSaved = await Song.insertMany({
-        trackName: songs.trackName,
-        trackUri: songs.trackUri,
-        displayImage: songs.displayImageUri,
-        artistName: songs.artists[0].name,
-        releaseDate: songs.releaseDate,
+        trackName: songs1.trackName,
+        trackUri: songs1.trackUri,
+        displayImage: songs1.displayImageUri,
+        artistName: songs1.artists[0].name,
+        releaseDate: songs1.releaseDate,
       });
       if (!songsDataSaved) {
+        logger.error('Song list not created')
         res.status(400).json({
           message: "songs list not created!",
         });
       }
       // console.log(songsDataSaved);
-    });
+    }
   } catch (error) {
+    logger.error(error.message)
     res.status(500).json({ message: error.message });
   }
 };

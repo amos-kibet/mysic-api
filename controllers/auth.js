@@ -8,10 +8,16 @@ import Jwt from "jsonwebtoken";
 import cookie from 'cookie'
 
 
+import {config} from "dotenv";
+import {logger} from "../utils/log.js";
+config()
+
+
 export const signUpController = (req, res) => {
   const { username, email, password } = req.body;
   User.findOne({ email }, async (err, data) => {
     if (err) {
+      logger.error(err.message)
       return res.status(500).json({
         error: `Server error message 1: ${err.message}`,
       });
@@ -32,14 +38,13 @@ export const signUpController = (req, res) => {
     await user
       .save()
       .then((data) => {
-        const token = Jwt.sign({ id: data._id }, 'dhfrurfeufe');
+        const token = Jwt.sign({ id: data._id }, process.env.JWT_SECRET);
         res.setHeader(
           "Set-Cookie",
           cookie.serialize("mysic_acces_token", token, {
             httpOnly: true,
             maxAge: 2 * 60 * 60,
             path: "/",
-            // sameSite: "mysic",
             secure: process.env.NODE_ENV === "production",
           })
         )
@@ -47,6 +52,7 @@ export const signUpController = (req, res) => {
         res.json(data)
       })
       .catch((err) => {
+        logger.error(err.message)
         return res.status(500).json({
           error: `Server error message 2: ${err.message}`,
         });
@@ -59,18 +65,20 @@ export const signInController = async (req, res) => {
 
   await User.findOne({ email }, (err, data) => {
     if (err) {
-      if (err.kind == "not_found") {
+      logger.error(err.message)
+      if (err.kind === "not_found") {
         return res.status(404).json({
           error: "There is no user with the provided email!",
         });
       }
+      logger.error(err.message)
       return res.status(500).json({
         error: `Server error message 1: ${err.message}`,
       });
     }
     if (data) {
       try {
-        if (data.confirmedEmail == false) {
+        if (data.confirmedEmail === false) {
           return res.status(403).json({
             message: "Email address not confirmed",
           });
@@ -84,6 +92,7 @@ export const signInController = async (req, res) => {
           error: "Incorrect password",
         });
       } catch (error) {
+        logger.error(error.message)
         return error;
       }
     }
