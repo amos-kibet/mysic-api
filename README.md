@@ -44,8 +44,8 @@ Signin expects
 - MongoDB: Storage
 - JWT: Token based authentication
 - bcryptjs: Password security
-- winston/morgan: Logs
-- Joi: Validations
+- winston: Logs
+
 
 ## Available scripts
 
