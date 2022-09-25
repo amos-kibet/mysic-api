@@ -1,8 +1,27 @@
 .env
+.env.production
 ReadmeDump.md
 server.js
+<<<<<<< HEAD
 node_modules/
 logs/
 package-lock.json
 .idea/
 dump/
+=======
+/node_modules
+<<<<<<< HEAD
+/dump
+/logs
+/.idea
+=======
+/logs
+package-lock.json
+/.idea
+/dump
+<<<<<<< HEAD
+>>>>>>> main
+=======
+/.history
+>>>>>>> main
+>>>>>>> ef9d5ee738f8e8cf4cb5bde9d7a4877652336783
