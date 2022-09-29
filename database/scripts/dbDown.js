@@ -1,13 +1,13 @@
 import { logger } from "../../utils/logger.js";
 import { dropDB } from "../queries.js";
 
-(() => {
-  require("../../config/db.config.init").query(dropDB, (err, _) => {
+export const dbUp = () => {
+  dbConnection.query(dropDB, (err, _) => {
     if (err) {
-      logger.error(err.message);
+      logger.log({ level: "error", message: err.message });
       return;
     }
-    logger.info("DB Dropped!");
+    logger.log({ level: "info", message: "DB Dropped!" });
     process.exit(0);
   });
-})();
+};

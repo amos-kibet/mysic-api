@@ -2,12 +2,12 @@ import { logger } from "../../utils/logger.js";
 import { createTableUsers } from "../queries.js";
 
 export const tablesUp = () => {
-  require("../../config/db.config").query(createTableUsers, (err, _) => {
+  dbConnection.query(createTableUsers, (err, _) => {
     if (err) {
-      logger.error(err.message);
+      logger.log({ level: "error", message: err.message });
       return;
     }
-    logger.info("Table users created!");
+    logger.log({ level: "info", message: "Table users created!" });
     process.exit(0);
   });
 };

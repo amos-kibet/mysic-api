@@ -1,6 +1,5 @@
 import express from "express";
 import { asyncHandler } from "../middleware/asyncHandler.js";
-
 import validateEmail from "../middleware/validateEmail.js";
 import { signup, signin } from "../validators/auth.js";
 
