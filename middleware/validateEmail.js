@@ -1,4 +1,4 @@
-const User = require("../models/userModel");
+import User from "../models/userModel.js";
 
 const validateEmail = (req, res, next) => {
   const { email } = req.body;
@@ -14,4 +14,4 @@ const validateEmail = (req, res, next) => {
   });
 };
 
-module.exports = validateEmail;
+export default validateEmail;

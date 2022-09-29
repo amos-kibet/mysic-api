@@ -11,4 +11,4 @@ const validatorHandler = (req, res, next, schema) => {
   next();
 };
 
-module.exports = validatorHandler;
+export default validatorHandler;

@@ -1,8 +1,8 @@
-const { logger } = require("../../utils/logger");
-const { createDB: createDBQuery } = require("../queries");
+import { logger } from "../../utils/logger.js";
+import { createDB } from "../queries.js";
 
 (() => {
-  require("../../config/db.config.init").query(createDBQuery, (err, _) => {
+  require("../../config/db.config.init").query(createDB, (err, _) => {
     if (err) {
       logger.error(err.message);
       return;

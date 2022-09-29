@@ -1,4 +1,4 @@
-const asyncHandler = (callback) => async (req, res, next) => {
+export const asyncHandler = (callback) => async (req, res, next) => {
   try {
     await callback(req, res, next);
   } catch (err) {
@@ -10,6 +10,6 @@ const asyncHandler = (callback) => async (req, res, next) => {
   return true;
 };
 
-module.exports = {
-  asyncHandler,
-};
+// export default {
+//   asyncHandler,
+// };

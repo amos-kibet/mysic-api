@@ -1,20 +1,19 @@
-const router = require("express").Router();
-const { asyncHandler } = require("../middleware/asyncHandler");
+import express from "express";
+import { asyncHandler } from "../middleware/asyncHandler.js";
 
-const validateEmail = require("../middleware/validateEmail");
-const {
-  signup: signupValidator,
-  signin: signinValidator,
-} = require("../validators/auth");
+import validateEmail from "../middleware/validateEmail.js";
+import { signup, signin } from "../validators/auth.js";
 
-const authController = require("../controller/user");
+import * as authController from "../controller/user.js";
+
+const router = express.Router();
 
 router.post(
   "/signup",
-  signupValidator,
+  signup,
   asyncHandler(validateEmail),
   asyncHandler(authController.signup)
 );
-router.post("/signin", signinValidator, asyncHandler(authController.signin));
+router.post("/signin", signin, asyncHandler(authController.signin));
 
-module.exports = router;
+export default router;

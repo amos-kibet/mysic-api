@@ -1,7 +1,7 @@
-const Joi = require("joi");
-const validatorHandler = require("../middleware/validatorHandler");
+import Joi from "joi";
+import validatorHandler from "../middleware/validatorHandler.js";
 
-const signup = (req, res, next) => {
+export const signup = (req, res, next) => {
   const schema = Joi.object().keys({
     username: Joi.string().trim().alphanum().min(3).max(50).required(),
     email: Joi.string().trim().email().required(),
@@ -13,7 +13,7 @@ const signup = (req, res, next) => {
   validatorHandler(req, res, next, schema);
 };
 
-const signin = (req, res, next) => {
+export const signin = (req, res, next) => {
   const schema = Joi.object().keys({
     email: Joi.string().trim().email().required(),
     password: Joi.string()
@@ -24,7 +24,7 @@ const signin = (req, res, next) => {
   validatorHandler(req, res, next, schema);
 };
 
-module.exports = {
-  signup,
-  signin,
-};
+// export default {
+//   signup,
+//   signin,
+// };

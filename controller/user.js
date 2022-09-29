@@ -1,13 +1,10 @@
-const User = require("../models/userModel");
-const {
-  hash: hashPassword,
-  compare: comparePassword,
-} = require("../utils/password");
-const { generate: generateToken } = require("../utils/token");
+import User from "../models/userModel.js";
+import { hash, compare } from "../utils/password.js";
+import { generate } from "../utils/token.js";
 
-exports.signup = (req, res) => {
+export const signup = (req, res) => {
   const { username, email, password } = req.body;
-  const hashedPassword = hashPassword(password.trim());
+  const hashedPassword = hash(password.trim());
 
   const user = new User(username.trim(), email.trim(), hashedPassword);
 
@@ -18,7 +15,7 @@ exports.signup = (req, res) => {
         message: err.message,
       });
     } else {
-      const token = generateToken(data.id);
+      const token = generate(data.id);
       res.status(201).send({
         status: "success",
         data: {
@@ -30,7 +27,7 @@ exports.signup = (req, res) => {
   });
 };
 
-exports.signin = (req, res) => {
+export const signin = (req, res) => {
   const { email, password } = req.body;
   User.findByEmail(email.trim(), (err, data) => {
     if (err) {
@@ -48,8 +45,8 @@ exports.signin = (req, res) => {
       return;
     }
     if (data) {
-      if (comparePassword(password.trim(), data.password)) {
-        const token = generateToken(data.id);
+      if (compare(password.trim(), data.password)) {
+        const token = generate(data.id);
         res.status(200).send({
           status: "success",
           data: {

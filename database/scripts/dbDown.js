@@ -1,8 +1,8 @@
-const { logger } = require("../../utils/logger");
-const { dropDB: dropDBQuery } = require("../queries");
+import { logger } from "../../utils/logger.js";
+import { dropDB } from "../queries.js";
 
 (() => {
-  require("../../config/db.config.init").query(dropDBQuery, (err, _) => {
+  require("../../config/db.config.init").query(dropDB, (err, _) => {
     if (err) {
       logger.error(err.message);
       return;

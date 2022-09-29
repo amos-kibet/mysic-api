@@ -1,7 +1,8 @@
-const winston = require("winston");
-const fs = require("fs");
-const path = require("path");
-require("dotenv/config");
+import winston from "winston";
+// import fs from "fs";
+// import path from "path";
+import dotenv from "dotenv";
+dotenv.config();
 
 const levels = {
   error: 0,
@@ -23,15 +24,15 @@ winston.addColors(colors);
 
 const transports = [
   new winston.transports.File({
-    filename: "../logs/errors.log",
+    filename: "./logs/errors.log",
     level: "error",
   }),
   new winston.transports.File({
-    filename: "../logs/combined.log",
+    filename: "./logs/combined.log",
   }),
 ];
 
-const logger = winston.createLogger({
+export const logger = winston.createLogger({
   level: "info",
   levels,
   format: winston.format.json(),
@@ -49,11 +50,6 @@ if (process.env.NODE_ENV !== "production") {
   );
 }
 
-const httpLogStream = fs.createWriteStream(
-  path.join(__dirname, "../", "logs", "http_logs.log")
-);
-
-module.exports = {
-  httpLogStream,
-  logger,
-};
+// export const httpLogStream = fs.createWriteStream(
+//   path.join(__dirname, "../", "logs", "http_logs.log")
+// );

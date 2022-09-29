@@ -1,16 +1,20 @@
-const express = require("express");
-const cors = require("cors");
-const morgan = require("morgan");
-const { logger, httpLogStream } = require("./utils/logger");
-const authRouter = require("./routes/user");
-require("dotenv").config();
+import express from "express";
+import cors from "cors";
+import winston from "winston";
+// const morgan = require("morgan");
+// const { logger, httpLogStream } = require("./utils/logger");
+
+import authRouter from "./routes/user.js";
+import { logger } from "./utils/logger.js";
+import dotenv from "dotenv";
+dotenv.config();
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(morgan("dev"));
-app.use(morgan("combined", { stream: httpLogStream }));
+// app.use(morgan("dev"));
+// app.use(morgan("combined", { stream: httpLogStream }));
 
 app.use("/api", authRouter);
 
@@ -42,4 +46,4 @@ app.listen(port, () => {
   logger.info(`API running on http://localhost:${port}`);
 });
 
-module.exports = app;
+export default app;

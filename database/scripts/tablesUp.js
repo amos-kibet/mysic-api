@@ -1,8 +1,8 @@
-const { logger } = require("../../utils/logger");
-const { createTableUsers: createTableUsersQuery } = require("../queries");
+import { logger } from "../../utils/logger.js";
+import { createTableUsers } from "../queries.js";
 
-(() => {
-  require("../../config/db.config").query(createTableUsersQuery, (err, _) => {
+export const tablesUp = () => {
+  require("../../config/db.config").query(createTableUsers, (err, _) => {
     if (err) {
       logger.error(err.message);
       return;
@@ -10,4 +10,4 @@ const { createTableUsers: createTableUsersQuery } = require("../queries");
     logger.info("Table users created!");
     process.exit(0);
   });
-})();
+};

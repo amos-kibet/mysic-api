@@ -1,10 +1,13 @@
-const { DB_NAME } = require("../utils/secrets");
+import dotenv from "dotenv";
+dotenv.config();
 
-const createDB = `CREATE DATABASE IF NOT EXISTS ${DB_NAME}`;
+const { DB_NAME } = process.env;
 
-const dropDB = `DROP DATABASE IF EXISTS ${DB_NAME}`;
+export const createDB = `CREATE DATABASE IF NOT EXISTS ${DB_NAME}`;
 
-const createTableUsers = `
+export const dropDB = `DROP DATABASE IF EXISTS ${DB_NAME}`;
+
+export const createTableUsers = `
 CREATE TABLE IF NOT EXISTS users (
     id INT PRIMARY KEY AUTO_INCREMENT,
     username VARCHAR(50) NOT NULL,
@@ -14,18 +17,18 @@ CREATE TABLE IF NOT EXISTS users (
 )
 `;
 
-const createNewUser = `
+export const createNewUser = `
 INSERT INTO users VALUES(null, ?, ?, ?, NOW())
 `;
 
-const findUserByEmail = `
+export const findUserByEmail = `
 SELECT * FROM users WHERE email = ?
 `;
 
-module.exports = {
-  createDB,
-  dropDB,
-  createTableUsers,
-  createNewUser,
-  findUserByEmail,
-};
+// module.exports = {
+//   createDB,
+//   dropDB,
+//   createTableUsers,
+//   createNewUser,
+//   findUserByEmail,
+// };

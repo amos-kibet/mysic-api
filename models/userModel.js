@@ -1,9 +1,6 @@
-const db = require("../config/db.config");
-const {
-  createNewUser: createNewUserQuery,
-  findUserByEmail: findUserByEmailQuery,
-} = require("../database/queries");
-const { logger } = require("../utils/logger");
+import dbConnection from "../config/db.config.js";
+import { createNewUser, findUserByEmail } from "../database/queries.js";
+import { logger } from "../utils/logger.js";
 
 class User {
   constructor(username, email, password) {
@@ -13,8 +10,8 @@ class User {
   }
 
   static create(newUser, callback) {
-    db.query(
-      createNewUserQuery,
+    dbConnection.query(
+      createNewUser,
       [newUser.username, newUser.email, newUser.password],
       (err, res) => {
         if (err) {
@@ -32,7 +29,7 @@ class User {
   }
 
   static findByEmail(email, callback) {
-    db.query(findUserByEmailQuery, email, (err, res) => {
+    dbConnection.query(findUserByEmail, email, (err, res) => {
       if (err) {
         logger.error(err.message);
         callback(err, null);
@@ -47,4 +44,4 @@ class User {
   }
 }
 
-module.exports = User;
+export default User;

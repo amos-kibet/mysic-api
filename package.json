@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "API for mysic web and mobile app",
   "main": "app.js",
+  "type": "module",
   "scripts": {
     "start": "nodemon app.js",
     "db:up": "node database/scripts/dbUp.js",

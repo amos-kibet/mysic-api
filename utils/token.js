@@ -1,10 +1,14 @@
-const jwt = require("jsonwebtoken");
-const { JWT_SECRET_KEY } = require("../utils/secrets");
-const { logger } = require("./logger");
+import jwt from "jsonwebtoken";
+// import { JWT_SECRET_KEY } from "../utils/secrets.js";
+import { logger } from "./logger.js";
+import dotenv from "dotenv";
+dotenv.config();
 
-const generate = (id) => jwt.sign({ id }, JWT_SECRET_KEY, { expiresIn: "1d" });
+const JWT_SECRET_KEY = process.env;
+export const generate = (id) =>
+  jwt.sign({ id }, JWT_SECRET_KEY, { expiresIn: "1d" });
 
-const decode = (token) => {
+export const decode = (token) => {
   try {
     return jwt.verify(token, JWT_SECRET_KEY);
   } catch (error) {
@@ -12,7 +16,7 @@ const decode = (token) => {
   }
 };
 
-module.exports = {
-  generate,
-  decode,
-};
+// export default {
+//   generate,
+//   decode,
+// };
