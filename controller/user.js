@@ -17,7 +17,7 @@ export const signup = (req, res) => {
         message: err.message,
       });
     } else {
-      logger.log({ level: "success", message: data });
+      logger.log({ level: "info", message: data });
       const token = generate(data.id);
       res.status(201).send({
         status: "success",
@@ -54,7 +54,7 @@ export const signin = (req, res) => {
     }
     if (data) {
       if (compare(password.trim(), data.password)) {
-        logger.log({ level: "success", message: data });
+        logger.log({ level: "info", message: data });
         const token = generate(data.id);
         res.status(200).send({
           status: "success",

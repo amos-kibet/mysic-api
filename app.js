@@ -1,6 +1,5 @@
 import express from "express";
 import cors from "cors";
-import winston from "winston";
 // const morgan = require("morgan");
 // const { logger, httpLogStream } = require("./utils/logger");
 
@@ -33,6 +32,7 @@ app.get("/", (req, res) => {
 });
 
 app.use((err, req, res, next) => {
+  logger.log({ level: "error", message: err.message });
   res.status(err.statusCode || 500).send({
     status: "error",
     message: err.message,
@@ -43,7 +43,10 @@ app.use((err, req, res, next) => {
 // creates an express server
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
-  logger.info(`API running on http://localhost:${port}`);
+  logger.log({
+    level: "info",
+    message: `API running on http://localhost:${port}`,
+  });
   console.log(`API running on http://localhost:${port}`);
 });
 
