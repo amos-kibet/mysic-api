@@ -2,7 +2,7 @@ name: Update main Branch
 
 on:
   schedule:
-    - cron: "20 9 * * *"
+    - cron: "30 9 * * *"
 
   # Should only be manually run on default branch (main)
   workflow_dispatch:
