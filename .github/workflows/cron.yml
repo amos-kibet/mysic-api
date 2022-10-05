@@ -2,14 +2,15 @@ name: Daily Update on main Branch
 
 on:
   schedule:
-    - cron: "50 9 * * *"
+    - cron: "55 9 * * *"
 
 jobs:
-  Pull develop into main
-  runs-on: ubuntu-latest
-  steps:
-    - name: Test cron job
-      run: echo "It is running"
+  - name: Pull develop into main
+  test_schedule:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test cron job
+        run: echo "It is running"
   # update:
   #   runs-on: ubuntu-latest
 
