@@ -6,7 +6,7 @@ on:
 
 jobs:
   Pull develop into main
-  run-on: ubuntu-latest
+  runs-on: ubuntu-latest
   steps:
     - name: Test cron job
       run: echo "It is running"
