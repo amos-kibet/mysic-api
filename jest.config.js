@@ -1,4 +1,3 @@
 export default {
-  testEnvironment: "node",
-  preset: "@shelf/jest-mongodb",
+  testTimeout: 60000,
 };
