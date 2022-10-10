@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app.js",
-    "test": "jest"
+    "test": "yarn node --experimental-vm-modules $(yarn bin jest)"
   },
   "authors": "Amos Kibet, Peter Tepela",
   "license": "ISC",
@@ -31,6 +31,7 @@
     "nodemailer": "^6.7.8",
     "process": "latest",
     "redis": "^4.3.1",
+    "supertest": "^6.3.0",
     "update": "^0.7.4"
   },
   "devDependencies": {
