@@ -5,19 +5,17 @@ import { User } from "../models/User.js";
 import { hash, compare } from "../utils/password.js";
 import { sendConfirmationEmail, confirmedEmail } from "../utils/email.js";
 import Jwt from "jsonwebtoken";
-import cookie from 'cookie'
+import cookie from "cookie";
 
-
-import {config} from "dotenv";
-import {logger} from "../utils/log.js";
-config()
-
+import { config } from "dotenv";
+import { logger } from "../utils/log.js";
+config();
 
 export const signUpController = (req, res) => {
   const { username, email, password } = req.body;
   User.findOne({ email }, async (err, data) => {
     if (err) {
-      logger.error(err.message)
+      logger.error(err.message);
       return res.status(500).json({
         error: `Server error message 1: ${err.message}`,
       });
@@ -25,20 +23,19 @@ export const signUpController = (req, res) => {
     if (data) {
       return res.status(401).json({
         error: "Email already in use",
-      })
+      });
     }
 
     const user = new User({
       username: username,
       email: email,
       password: hash(password),
-
     });
 
     await user
       .save()
       .then((data) => {
-        const token = Jwt.sign({ id: data._id }, process.env.JWT_SECRET);
+        const token = Jwt.sign({ id: data._id }, process.env.JWT_SECRET_KEY);
         res.setHeader(
           "Set-Cookie",
           cookie.serialize("mysic_acces_token", token, {
@@ -47,12 +44,12 @@ export const signUpController = (req, res) => {
             path: "/",
             secure: process.env.NODE_ENV === "production",
           })
-        )
+        );
         sendConfirmationEmail(email, user._id);
-        res.json(data)
+        res.json(data);
       })
       .catch((err) => {
-        logger.error(err.message)
+        logger.error(err.message);
         return res.status(500).json({
           error: `Server error message 2: ${err.message}`,
         });
@@ -65,13 +62,13 @@ export const signInController = async (req, res) => {
 
   await User.findOne({ email }, (err, data) => {
     if (err) {
-      logger.error(err.message)
+      logger.error(err.message);
       if (err.kind === "not_found") {
         return res.status(404).json({
           error: "There is no user with the provided email!",
         });
       }
-      logger.error(err.message)
+      logger.error(err.message);
       return res.status(500).json({
         error: `Server error message 1: ${err.message}`,
       });
@@ -92,7 +89,7 @@ export const signInController = async (req, res) => {
           error: "Incorrect password",
         });
       } catch (error) {
-        logger.error(error.message)
+        logger.error(error.message);
         return error;
       }
     }

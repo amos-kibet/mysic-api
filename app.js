@@ -6,34 +6,30 @@ import { dbConnect } from "./config/db.config.js";
 import { authRouter } from "./routes/user.js";
 import { songsRouter } from "./routes/songs.js";
 import { adminUserManagement } from "./routes/admin/usersManagement.js";
-import {logger} from "./utils/log.js";
+import { logger, httpLogStream } from "./utils/log.js";
 // import { redisConnection } from "./config/redis.conect.js";
-
 
 dotenv.config();
 
 dbConnect();
 // redisConnection()
 
-
-
 const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(morgan("combined", { stream: logger}));
-
+app.use(morgan("http", { stream: httpLogStream }));
 
 app.use("/api", authRouter);
 app.use("/api", songsRouter);
-app.use("/api", adminUserManagement)
+app.use("/api", adminUserManagement);
 
 // base route, for test purposes
 app.get("/", (req, res) => {
   res.status(200).send({
     msg: "API working fine!",
   });
-  logger.info('Api working fine')
+  logger.log("info", "Api working fine");
   console.log("API working fine!");
 });
 
@@ -48,6 +44,8 @@ app.use((err, req, res, next) => {
 const port = process.env.PORT || 5000;
 
 app.listen(port, () => {
-  logger.info(`API running on http://localhost:${port}`)
+  logger.log("info", `API running on http://localhost:${port}`);
   console.log(`API running on http://localhost:${port}`);
 });
+
+export default app;
