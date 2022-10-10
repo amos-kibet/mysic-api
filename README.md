@@ -52,36 +52,8 @@ Signin expects
 - `start`: Starts the server with node
 - `start:dev`: Starts the server in watch mode
 
-## Getting started
+## Contribution Guidelines 🏗
 
-You can either fork this repository or clone it by starting your terminal, then change the directory to where you would like to save it and run
+Want to add your inputs to the repo? We invite you to contribute.
 
-```sh
-git clone https://github.com/amos-kibet/mysic-api.git
-```
-
-Change to the newly downloaded directory with
-
-```sh
-cd mysic-api
-```
-
-Rename the file named `.env.example` to `.env` and update the variable values with valid ones
-
-Install the required dependencies with
-
-```sh
-npm install
-```
-
-Start the app with
-
-```sh
-npm start
-```
-
-You can also start it in watch mode with
-
-```sh
-npm run start:dev
-```
+Head to [CONTRIBUTING.md](https://github.com/amos-kibet/mysic-api/blob/main/CONTRIBUTING.md) to start contributing.
