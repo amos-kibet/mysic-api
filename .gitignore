@@ -8,9 +8,16 @@ server.js
 /.idea
 
 /logs
-package-lock.json
+
 /.idea
 /dump
 
 /.history
 
+# debug and log files
+npm-debug.log*
+.pnpm-debug.log*
+
+# package manager lock files 
+pnpm-lock.yaml
+package-lock.json

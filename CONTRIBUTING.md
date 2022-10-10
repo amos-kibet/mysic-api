@@ -66,19 +66,19 @@ Rename the file named `.env.example` to `.env` and update the variable values wi
 Install the required dependencies with
 
 ```sh
-npm install
+yarn install
 ```
 
 Start the app with
 
 ```sh
-npm start
+yarn start
 ```
 
 You can also start it in watch mode with
 
 ```sh
-npm run start:dev
+yarn run start:dev
 ```
 
 
