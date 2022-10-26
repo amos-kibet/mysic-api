@@ -60,36 +60,44 @@ export const signUpController = (req, res) => {
 export const signInController = async (req, res) => {
   const { email, password } = req.body;
 
+  // console.log(email);
+
   await User.findOne({ email }, (err, data) => {
-    if (err) {
-      if (err.kind === "not_found") {
-        logger.error(err.message);
-        return res.status(404).json({
-          error: "There is no user with the provided email!",
-        });
-      }
-      logger.error(err.message);
-      return res.status(500).json({
-        error: `Server error message 1: ${err.message}`,
+    console.log(data);
+    // console.log(email);
+    // if (err) {
+    //   logger.error(err.message);
+    //   return res.status(500).json({
+    //     error: `Server error message 1: ${err.message}`,
+    //   });
+    // }
+
+    if (data === null) {
+      logger.error("Incorrect email");
+      return res.status(401).json({
+        message: "Incorrect email",
       });
     }
+
     if (data) {
       try {
         if (data.confirmedEmail === false) {
+          logger.error("Email address not confirmed");
           return res.status(403).json({
             message: "Email address not confirmed",
           });
         }
-        if (compare(password, data.password)) {
-          return res.status(200).json({
-            success: "Login successful",
-          });
-        }
+
         if (!compare(password, data.password)) {
+          logger.error("Incorrect password");
           return res.status(401).json({
             error: "Incorrect password",
           });
         }
+
+        return res.status(200).json({
+          success: "Login successful",
+        });
       } catch (error) {
         logger.error(error.message);
         return error;
