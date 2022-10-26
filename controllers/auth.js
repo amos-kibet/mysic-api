@@ -38,7 +38,7 @@ export const signUpController = (req, res) => {
         const token = Jwt.sign({ id: data._id }, process.env.JWT_SECRET_KEY);
         res.setHeader(
           "Set-Cookie",
-          cookie.serialize("mysic_acces_token", token, {
+          cookie.serialize("access_token", token, {
             httpOnly: true,
             maxAge: 2 * 60 * 60,
             path: "/",
@@ -62,8 +62,8 @@ export const signInController = async (req, res) => {
 
   await User.findOne({ email }, (err, data) => {
     if (err) {
-      logger.error(err.message);
       if (err.kind === "not_found") {
+        logger.error(err.message);
         return res.status(404).json({
           error: "There is no user with the provided email!",
         });
@@ -85,9 +85,11 @@ export const signInController = async (req, res) => {
             success: "Login successful",
           });
         }
-        return res.status(401).json({
-          error: "Incorrect password",
-        });
+        if (!compare(password, data.password)) {
+          return res.status(401).json({
+            error: "Incorrect password",
+          });
+        }
       } catch (error) {
         logger.error(error.message);
         return error;
