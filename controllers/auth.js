@@ -64,13 +64,12 @@ export const signInController = async (req, res) => {
 
   await User.findOne({ email }, (err, data) => {
     console.log(data);
-    // console.log(email);
-    // if (err) {
-    //   logger.error(err.message);
-    //   return res.status(500).json({
-    //     error: `Server error message 1: ${err.message}`,
-    //   });
-    // }
+    if (err) {
+      logger.error(err.message);
+      return res.status(500).json({
+        error: `Server error message 1: ${err.message}`,
+      });
+    }
 
     if (data === null) {
       logger.error("Incorrect email");
