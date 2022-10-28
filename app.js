@@ -34,19 +34,13 @@ app.get("/", (req, res) => {
   console.log("API working fine!");
 });
 
+// FIXME: Refactor this, not sure of it's use
 app.use((err, req, res, next) => {
   res.status(err.statusCode || 500).send({
     status: "error",
     message: err.message,
   });
   next();
-});
-
-const port = process.env.PORT || 5000;
-
-app.listen(port, () => {
-  logger.log("info", `API running on http://localhost:${port}`);
-  console.log(`API running on http://localhost:${port}`);
 });
 
 export default app;
