@@ -3,27 +3,20 @@ import request from "supertest";
 import mongoose from "mongoose";
 import app from "../app.js";
 import dotenv from "dotenv";
-import mockingoose from "mockingoose";
 import { Song } from "../models/Songs.js";
 import { User } from "../models/User.js";
+import {
+  connectDatabase,
+  dropDatabase,
+  dropCollections,
+} from "../utils/setupTestDb.js";
+import { logger } from "../utils/log.js";
 
 dotenv.config();
-/* connects to db before each test */
-beforeAll(async () => {
-  try {
-    await mongoose.connect(process.env.MONGO_URI);
-  } catch (error) {
-    console.log(error);
-  }
-});
 
-/* closes db connection after tests */
-afterAll(async () => {
-  try {
-    await mongoose.connection.close();
-  } catch (error) {
-    console.log(error);
-  }
+/* connects to db & starts server before each test */
+beforeEach(async () => {
+  await connectDatabase();
 });
 
 describe("API Endpoints", () => {
@@ -77,53 +70,36 @@ describe("API Endpoints", () => {
 });
 
 describe("CRUD Operations", () => {
-  describe("GET /api/users/:id", () => {
-    it("should return a user with given id", async () => {
-      let mockUser = {
-        username: "some_username",
-        email: "example@example.example",
+  describe("POST /api/signup", () => {
+    it("should register a user with valid credentials", async () => {
+      const validUser = {
+        username: "username",
+        email: "example@email.com",
         password: "some_password",
-        confirmedEmail: false,
-        _id: "63590008b85eabff281c0000",
-        __v: 0,
+      };
+      const mockUser = await User(validUser);
+      await mockUser.save();
+
+      expect(mockUser._id).toBeDefined();
+      expect(mockUser.username).toBe(validUser.username);
+      expect(mockUser.email).toBe(validUser.email);
+      expect(mockUser.password).toBe(validUser.password);
+    });
+
+    it("should fail to register user without required fields", async () => {
+      const invalidUser = {
+        username: "some_username",
+        email: "example@email.com",
+        password: "some_password",
       };
 
-      mockingoose(User).toReturn(mockUser, "findOne");
-
-      return User.findById({ _id: "63590008b85eabff281c0000" }).then((doc) => {
-        expect(JSON.parse(JSON.stringify(doc))).toMatchObject(mockUser);
-      });
+      try {
+        const mockUser = new User(invalidUser);
+        await mockUser.save();
+      } catch (error) {
+        expect(error).toBeInstanceOf(mongoose.Error.ValidationError);
+        expect(error.errors.email).toBeDefined();
+      }
     });
   });
-
-  // describe("PATCH /api/users", () => {
-  //   it("should return the user with update", async () => {
-  //     const mockUser = {
-  //       _id: "63590008b85eabff281c0000",
-  //       username: "name",
-  //       email: "example@example.example",
-  //     };
-
-  //     mockingoose(User).toReturn(mockUser, "update");
-
-  //     const doc = await User.updateOne({ name: "username" }).where({
-  //       _id: "63590008b85eabff281c0000",
-  //     });
-  //     expect(JSON.parse(JSON.stringify(doc))).toMatchObject(mockUser);
-  //   });
-  // });
-
-  // describe("POST /api/signup", () => {
-  //   it("should register a user with valid credentials", async () => {
-  //     // FIXME: populates dev db instead of test db
-  //     const res = await request(app).post("/api/signup").send({
-  //       username: "username",
-  //       email: "example@email.com",
-  //       password: "some_password",
-  //     });
-
-  //     expect(res.statusCode).toBe(200);
-  //     expect(res.body.username).toBe("username");
-  //   });
-  // });
 });
