@@ -12,6 +12,7 @@ import { logger } from "../utils/log.js";
 config();
 
 export const signUpController = (req, res) => {
+  // TODO: refactor this
   const { username, email, password } = req.body;
   User.findOne({ email }, async (err, data) => {
     if (err) {
