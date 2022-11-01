@@ -1,11 +1,12 @@
 import express from "express";
+import auth from "../controllers/auth.js";
 
-import { signUpController, signInController } from "../controllers/auth.js";
 import { confirmedEmail } from "../utils/email.js";
 
 const router = express.Router();
 
-router.post("/signup", signUpController).post("/signin", signInController);
+router.post("/signup", auth.signUpController)
+router.post("/signin", auth.signInController);
 router.get("/confirm/:id", confirmedEmail)
 router.post("/signin");
 

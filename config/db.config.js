@@ -1,4 +1,3 @@
-// @ts-nocheck
 import mongoose from "mongoose";
 import * as dotenv from "dotenv";
 
@@ -6,8 +5,8 @@ dotenv.config();
 const uri = process.env.MONGO_URI;
 const options = {
   dbName: "data",
-  // useNewUrlParser: true,
-  // useUnifiedTopology: true,
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
 };
 export const dbConnect = () => {
   mongoose
