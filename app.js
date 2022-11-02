@@ -28,7 +28,7 @@ app.use("/api", adminUserManagement);
 // base route, for test purposes
 app.get("/", (req, res) => {
   res.status(200).send({
-    msg: "API working fine!",
+    message: "API working fine!",
   });
   logger.log("info", "API working fine!");
   console.log("API working fine!");
