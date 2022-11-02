@@ -1,0 +1,29 @@
+{
+  "env": {
+    // "commonjs": true,
+    "es2020": true,
+    //"ecmaFeatures": { "modules": true },
+    "node": true,
+    "jest/globals": true,
+    "amd": true
+  },
+  "extends": ["airbnb-base", "prettier"],
+  "plugins": ["prettier", "jest"],
+  "globals": {
+    "Atomics": "readonly",
+    "SharedArrayBuffer": "readonly"
+  },
+  "parserOptions": {
+    "ecmaVersion": 11
+  },
+  "rules": {
+    "prettier/prettier": ["error", { "singleQuote": true }],
+    "no-console": "off",
+    "import/no-unresolved": "off",
+    "jest/no-disabled-tests": "warn",
+    "jest/no-focused-tests": "error",
+    "jest/no-identical-title": "error",
+    "jest/prefer-to-have-length": "warn",
+    "jest/valid-expect": "error"
+  }
+}

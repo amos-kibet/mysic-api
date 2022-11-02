@@ -2,11 +2,9 @@
 import dotenv from "dotenv";
 import axios from "axios";
 import { Song } from "../models/Songs.js";
-import { getAllDocuments } from "../utils/crud.js";
+import { getAllDocuments } from "../services/crud.js";
 
-
-import {loggers} from "winston";
-import {logger} from "../utils/log.js";
+import { logger } from "../utils/log.js";
 dotenv.config();
 
 const api = process.env.MUSIC_API;
@@ -30,7 +28,7 @@ export const songsController = async (req, res) => {
         releaseDate: songs1.releaseDate,
       });
       if (!songsDataSaved) {
-        logger.error('Song list not created')
+        logger.error("Song list not created");
         res.status(400).json({
           message: "songs list not created!",
         });
@@ -38,9 +36,9 @@ export const songsController = async (req, res) => {
       // console.log(songsDataSaved);
     }
   } catch (error) {
-    logger.error(error.message)
+    logger.error(error.message);
     res.status(500).json({ message: error.message });
   }
 };
 
-export const getAllSongs = getAllDocuments(Song)
+export const getAllSongs = getAllDocuments(Song);

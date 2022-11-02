@@ -8,7 +8,7 @@ const timestamp = new Date(Date.now()).toLocaleString("en-us", {
 });
 const customFormat = winston.format.combine(
   winston.format.printf((info) => {
-    return `${timestamp} [${info.level.toUpperCase().padEnd(7)}]: ${
+    return `${timestamp} [${info.level.toUpperCase().padEnd(0)}]: ${
       info.message
     }`;
   })

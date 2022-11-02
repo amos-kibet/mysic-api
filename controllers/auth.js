@@ -58,10 +58,17 @@ const signInController = async (req, res) => {
   if (!user) {
     return res.status(400).json({ message: "Account not found. Register" });
   }
+
+  if (user.confirmedEmail == false) {
+    return res
+      .status(403)
+      .json({ message: "Confirm your account before signing in!" });
+  }
+
   const savedPassword = user.password;
   const isPasswordCorrect = compare(password, savedPassword);
   if (isPasswordCorrect === false) {
-    return res.status(400).json({ message: "Wrong Pin!" });
+    return res.status(400).json({ message: "Wrong Password!" });
   }
   const token = Jwt.sign({ id: user._id }, process.env.JWT_SECRET_KEY);
   res.setHeader(
