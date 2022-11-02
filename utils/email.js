@@ -2,18 +2,20 @@
 import * as nodemailer from "nodemailer";
 import * as dotenv from "dotenv";
 import { User } from "../models/User.js";
-import {logger} from "./log.js";
-
+import { logger } from "./log.js";
 
 dotenv.config();
 export const confirmedEmail = async (req, res) => {
-  const { id } = req.params
-  const user = await User.findOneAndUpdate({ _id: id }, { confirmedEmail: true }).exec()
+  const { id } = req.params;
+  const user = await User.findOneAndUpdate(
+    { _id: id },
+    { confirmedEmail: true }
+  ).exec();
   if (!user) {
-    logger.error('Could not find User')
-    return false
+    logger.error("Could not find User");
+    return false;
   }
-  return res.send("Email confirmed ✅")
+  return res.send("Email confirmed ✅");
 };
 export const sendConfirmationEmail = async (email, id) => {
   const transport = nodemailer.createTransport({
@@ -31,22 +33,21 @@ export const sendConfirmationEmail = async (email, id) => {
       html: `<h1>Email Confirmation</h1>
         <h2>Hello </h2>
         <p>Thank you for registering with <b>mysic</b>.</p>
-        <p>Please <a href=http://localhost:5000/api/confirm/${id}>Click here</a> to confirm your account</p>
+        <p>Please <a href=https://api-ibambe.onrender.com/api/confirm/${id}>Click here</a> to confirm your account</p>
         </div>`,
     })
     .then((data) => {
       if (Error) {
-        logger.error(Error)
+        logger.error(Error);
         return `Could not send email. See error: ${Error}`;
       }
-      logger.info(data)
+      logger.info(data);
       return res.status(200).json({
         success: "Email sent successfully",
       });
     })
     .catch((error) => {
-      logger.error(error.message)
+      logger.error(error.message);
       return error;
     });
 };
-
