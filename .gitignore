@@ -3,17 +3,21 @@
 ReadmeDump.md
 server.js
 /node_modules
-<<<<<<< HEAD
 /dump
 /logs
 /.idea
-=======
+
 /logs
-package-lock.json
+
 /.idea
 /dump
-<<<<<<< HEAD
->>>>>>> main
-=======
+
 /.history
->>>>>>> main
+
+# debug and log files
+npm-debug.log*
+.pnpm-debug.log*
+
+# package manager lock files 
+pnpm-lock.yaml
+package-lock.json

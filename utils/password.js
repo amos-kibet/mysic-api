@@ -1,4 +1,3 @@
-// @ts-nocheck
 import bcrypt from "bcryptjs";
 
 export const hash = (password) => {
